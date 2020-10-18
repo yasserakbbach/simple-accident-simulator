@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Accident Simulator</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/mystyle.css">
+    <link rel="shortcut icon" href="images/car.png" type="image/x-icon">
+</head>
+<body>
+    
+    <div class="container mt-4">
+        <h1 class="title">Simple Accident Simulator</h1>
+        <div class="row">
+            <canvas class="scene" id="canvas" width="500" height="720"></canvas>
+        <ul class="list-unstyled ml-2 p-2">
+            <li class="mb-2">
+                <img id="street" class="btn" src="images/street1.png" width="70" height="70" alt="" srcset="">
+            </li>
+            <li class="mb-2">
+                <img id="car" class="btn" src="images/car.svg" width="70" height="70" alt="" srcset="">
+            </li>
+            <li class="mb-2">
+                <img id="person" class="btn" src="images/strong-person.svg" width="70" height="70" alt="" srcset="">
+            </li>
+            <li>
+                <button id="delete" class="btn btn-danger">DELETE</button>
+            </li>
+            <li>
+                <button id="clear" class="btn btn-warning mt-3">CLEAR ALL</button>
+            </li>
+        </ul>
+        </div>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/fabric.js"></script>
+    <script>
+
+        const canvas = new fabric.Canvas('canvas', {
+            preserveObjectStacking: true
+        });
+        
+        function buildObjectCanvas(objectId) {
+
+            $(`#${objectId}`).click(() => {
+
+                const imgElement = document.getElementById(objectId);
+                const imgInstance = new fabric.Image(imgElement, {
+                    id: new Date().getUTCMilliseconds(),
+                    top: 150,
+                    left: 100,
+                    opacity: 1,
+                    scaleX: 20 / imgElement.width,
+                    scaleY: 20 / imgElement.height
+                });
+                canvas.add(imgInstance);
+            });
+        }
+
+        // Car
+        buildObjectCanvas('car');
+
+        // Person
+        buildObjectCanvas('person');
+
+        // Street
+        buildObjectCanvas('street');
+
+        $('#delete').click(() => {
+
+            const objects = canvas.getObjects();
+            const activeObject = canvas.getActiveObject();
+            objects.forEach(e => {
+                if(activeObject && activeObject.id == e.id) {
+                    canvas.remove(e);
+                    return;
+                }
+            });
+        });
+
+        $('#clear').click(() => {
+            canvas.getObjects()
+                  .forEach(e => canvas.remove(e))
+        });
+
+    </script>
+
+</body>
+</html>

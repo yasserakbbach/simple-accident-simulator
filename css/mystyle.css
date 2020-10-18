@@ -1,0 +1,14 @@
+.scene {
+    border: 2px solid black;
+}
+.title {
+    animation : pulse 1s infinite;
+}
+@keyframes pulse {
+    0% {
+        color: #000;
+    }
+    100% {
+        color: #FF4136;
+    }
+}
